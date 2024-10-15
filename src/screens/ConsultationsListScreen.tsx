@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import axios from "axios";
 
 interface Consultation {
   id: number;
@@ -15,13 +15,16 @@ const ConsultationsListScreen = () => {
   const [consultations, setConsultations] = useState<Consultation[]>([]);
 
   useEffect(() => {
-    // Fetch consultations from the backend
-    axios.get('http://localhost:3000/api/consultations')
+
+    const storedUsername = localStorage.getItem("username");
+
+    axios
+      .get(`http://localhost:3000/api/consultations?username=${storedUsername}`)
       .then((response) => {
         setConsultations(response.data.consultations);
       })
       .catch((error) => {
-        console.error('Erro ao buscar consultas:', error);
+        console.error("Erro ao buscar consultas:", error);
       });
   }, []);
 
@@ -50,12 +53,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   consultationItem: {
     padding: 16,
     marginVertical: 8,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
   },
 });
